@@ -10,6 +10,10 @@
 
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputAction.h"
+#include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
+
 
 #include "Tank.generated.h"
 
@@ -37,11 +41,16 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* MoveAction;
 	
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 	
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
+
+	void MoveInput();
 	
 };

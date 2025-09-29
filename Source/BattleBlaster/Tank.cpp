@@ -44,4 +44,15 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::MoveInput);
+	}
+	
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void ATank::MoveInput()
+{
+	UE_LOG(LogTemp, Warning, TEXT("MoveInput"));
 }
