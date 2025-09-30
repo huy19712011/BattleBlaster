@@ -25,4 +25,20 @@ void ABattleBlasterGameMode::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("GameMode: Failed to find the tank actor!"));
 		}
 	}
+
+	int32 LoopIndex = 0;
+	while (LoopIndex < TowerCount)
+	{
+		if (AActor* TowerActor = Towers[LoopIndex])
+		{
+			ATower* Tower = Cast<ATower>(TowerActor);
+			if (Tower && Tank)
+			{
+				Tower->Tank = Tank;
+				UE_LOG(LogTemp, Warning, TEXT("%s setting the tank variable"), *Tower->GetActorNameOrLabel());
+			}
+		}
+		LoopIndex ++;
+	}
+
 }
