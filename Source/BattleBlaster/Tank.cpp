@@ -2,6 +2,7 @@
 
 
 #include "Tank.h"
+#include "Kismet/GameplayStatics.h"
 
 ATank::ATank()
 {
@@ -56,5 +57,8 @@ void ATank::MoveInput(const FInputActionValue& Value)
 {
 	float InputValue = Value.Get<float>();
 
-	UE_LOG(LogTemp, Warning, TEXT("InputValue: %f"), InputValue);
+	FVector DeltaLocation = FVector(0.0f, 0.0f, 0.0f);
+	DeltaLocation.X = Speed * InputValue * UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
+	AddActorLocalOffset(DeltaLocation, true);
+	// UE_LOG(LogTemp, Warning, TEXT("InputValue: %f"), InputValue);
 }
