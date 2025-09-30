@@ -70,6 +70,15 @@ void ABasePawn::Fire()
 	// 	SpawnLocation,
 	// 	25.0f, 12, FColor::Red, false, 3.0f);
 
-	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+	if (AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation))
+	{
+		Projectile->SetOwner(this);
+
+		// for the example only
+		if (AActor* ProjectileOwner = Projectile->GetOwner())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Projectile owner: %s"), *ProjectileOwner->GetActorNameOrLabel());
+		}
+	}
 }
 
