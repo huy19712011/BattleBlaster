@@ -30,4 +30,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	float Health;
+
+	UFUNCTION()
+	void OnDamageTaken(AActor* DamageActor, float Damage,
+		const class UDamageType* DamageType, class AController* InstigateBy, AActor* DamageCauser);
 };
