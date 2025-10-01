@@ -22,7 +22,8 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 // Called every frame
@@ -30,5 +31,15 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                        FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Projectile hit: %s"), *OtherActor->GetActorNameOrLabel());
+	}
 }
 
