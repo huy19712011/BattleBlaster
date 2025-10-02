@@ -45,11 +45,15 @@ void ABattleBlasterGameMode::BeginPlay()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 {
+	bool IsGameOver = false;
+	bool IsVictory = false;
+	
 	if (DeadActor == Tank)
 	{
 		// Tank just died
 		// UE_LOG(LogTemp, Warning, TEXT("Tank Died, defeat!"));
 		Tank->HandleDestruction();
+		IsGameOver = true;
 	}
 	else
 	{
@@ -64,8 +68,16 @@ void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 			TowerCount--;
 			if (TowerCount == 0)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("All Towers are dead, Victory!"));
+				// UE_LOG(LogTemp, Warning, TEXT("All Towers are dead, Victory!"));
+				IsGameOver = true;
+				IsVictory = true;
 			}
 		}
+	}
+
+	if (IsGameOver)
+	{
+		FString GameOverString = IsVictory ? "Victory!" : "Defeat!";
+		UE_LOG(LogTemp, Warning, TEXT("Game over: %s"), *GameOverString);
 	}
 }
