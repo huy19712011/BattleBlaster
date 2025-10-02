@@ -36,3 +36,11 @@ bool ATower::IsInFireRange()
 {
 	return (Tank && (FVector::Dist(GetActorLocation(), Tank->GetActorLocation()) <= FireRange));
 }
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void ATower::HandleDestruction()
+{
+	Super::HandleDestruction();
+
+	Destroy();
+}

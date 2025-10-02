@@ -83,3 +83,11 @@ void ATank::TurnInput(const FInputActionValue& Value)
 	DeltaRotation.Yaw = TurnRate * InputValue * GetWorld()->GetDeltaSeconds();
 	AddActorLocalRotation(DeltaRotation, true);
 }
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void ATank::HandleDestruction()
+{
+	Super::HandleDestruction();
+
+	UE_LOG(LogTemp, Warning, TEXT("Tank HandleDestruction"));
+}
