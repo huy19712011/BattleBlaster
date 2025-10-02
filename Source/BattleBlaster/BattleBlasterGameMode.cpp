@@ -42,6 +42,17 @@ void ABattleBlasterGameMode::BeginPlay()
 		LoopIndex++;
 	}
 
+	class APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController)
+	{
+		ScreenMessageWidget = CreateWidget<UScreenMessage>(PlayerController, ScreenMessageClass);
+		if (ScreenMessageWidget)
+		{
+			ScreenMessageWidget->AddToPlayerScreen();
+			ScreenMessageWidget->SetMessageText("Get Ready from C++");
+		}
+	}
+
 	CountdownSeconds = CountdownDelay;
 
 	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this,
@@ -84,7 +95,10 @@ void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 	if (IsGameOver)
 	{
 		FString GameOverString = IsVictory ? "Victory!" : "Defeat!";
-		UE_LOG(LogTemp, Warning, TEXT("Game over: %s"), *GameOverString);
+		// UE_LOG(LogTemp, Warning, TEXT("Game over: %s"), *GameOverString);
+		ScreenMessageWidget->SetMessageText(GameOverString);
+		ScreenMessageWidget->SetVisibility(ESlateVisibility::Visible);
+		
 
 		FTimerHandle GameOverTimerHandle;
 		GetWorldTimerManager().SetTimer(GameOverTimerHandle, this,
@@ -95,8 +109,7 @@ void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 // ReSharper disable once CppMemberFunctionMayBeConst
 void ABattleBlasterGameMode::OnGameOverTimerTimeout()
 {
-	class UGameInstance* GameInstance = GetGameInstance();
-	if (GameInstance)
+	if (class UGameInstance* GameInstance = GetGameInstance())
 	{
 		if (UBattleBlasterGameInstance* BattleBlasterGameInstance = Cast<UBattleBlasterGameInstance>(GameInstance))
 		{
@@ -120,17 +133,20 @@ void ABattleBlasterGameMode::OnCountdownTimerTimeout()
 	CountdownSeconds -= 1;
 	if (CountdownSeconds > 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Countdown: %d"), CountdownSeconds);
+		// UE_LOG(LogTemp, Warning, TEXT("Countdown: %d"), CountdownSeconds);
+		ScreenMessageWidget->SetMessageText(FString::FromInt(CountdownSeconds));
 	}
 	else if (CountdownSeconds == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Go!"));
+		// UE_LOG(LogTemp, Warning, TEXT("Go!"));
+		ScreenMessageWidget->SetMessageText("Go!!!");
 		Tank->SetPlayerEnabled(true);				
 	}
 	else
 	{
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
-		UE_LOG(LogTemp, Warning, TEXT("Clear timer!"));
+		// UE_LOG(LogTemp, Warning, TEXT("Clear timer!"));
+		ScreenMessageWidget->SetVisibility(ESlateVisibility::Hidden);
 		
 	}
 }
