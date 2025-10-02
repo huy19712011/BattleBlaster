@@ -25,7 +25,7 @@ void ATower::Tick(float DeltaTime)
 // ReSharper disable once CppMemberFunctionMayBeConst
 void ATower::CheckFireCondition()
 {
-	if (IsInFireRange())
+	if (Tank->IsAlive && IsInFireRange())
 	{
 		Fire();
 	}
