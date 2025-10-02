@@ -46,8 +46,8 @@ void ABattleBlasterGameMode::BeginPlay()
 void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 {
 	bool IsGameOver = false;
-	bool IsVictory = false;
-	
+	// bool IsVictory = false;
+
 	if (DeadActor == Tank)
 	{
 		// Tank just died
@@ -63,8 +63,8 @@ void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 			// UE_LOG(LogTemp, Warning, TEXT("A Tower just Died!"));
 			// DeadTower->Destroy();
 			DeadTower->HandleDestruction();
-			
-			
+
+
 			TowerCount--;
 			if (TowerCount == 0)
 			{
@@ -82,8 +82,7 @@ void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 
 		FTimerHandle GameOverTimerHandle;
 		GetWorldTimerManager().SetTimer(GameOverTimerHandle, this,
-			&ABattleBlasterGameMode::OnGameOverTimerTimeout, GameOverDelay, false);
-
+		                                &ABattleBlasterGameMode::OnGameOverTimerTimeout, GameOverDelay, false);
 	}
 }
 
@@ -91,5 +90,14 @@ void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
 void ABattleBlasterGameMode::OnGameOverTimerTimeout()
 {
 	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	UGameplayStatics::OpenLevel(GetWorld(), *CurrentLevelName);
+
+	if (IsVictory)
+	{
+		// load the next level
+	}
+	else
+	{
+		// load current level
+		UGameplayStatics::OpenLevel(GetWorld(), *CurrentLevelName);
+	}
 }
