@@ -41,6 +41,11 @@ void ABattleBlasterGameMode::BeginPlay()
 		}
 		LoopIndex++;
 	}
+
+	CountdownSeconds = CountdownDelay;
+
+	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this,
+	                                &ABattleBlasterGameMode::OnCountdownTimerTimeout, 1.0f, true);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
@@ -104,8 +109,28 @@ void ABattleBlasterGameMode::OnGameOverTimerTimeout()
 			{
 				// load current level
 				BattleBlasterGameInstance->RestartCurrentLevel();
-			}			
+			}
 		}
 	}
+}
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void ABattleBlasterGameMode::OnCountdownTimerTimeout()
+{
+	CountdownSeconds -= 1;
+	if (CountdownSeconds > 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Countdown: %d"), CountdownSeconds);
+	}
+	else if (CountdownSeconds == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Go!"));
+		Tank->SetPlayerEnabled(true);				
+	}
+	else
+	{
+		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
+		UE_LOG(LogTemp, Warning, TEXT("Clear timer!"));
+		
+	}
 }
