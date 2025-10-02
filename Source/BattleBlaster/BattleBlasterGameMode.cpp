@@ -38,7 +38,31 @@ void ABattleBlasterGameMode::BeginPlay()
 				UE_LOG(LogTemp, Warning, TEXT("%s setting the tank variable"), *Tower->GetActorNameOrLabel());
 			}
 		}
-		LoopIndex ++;
+		LoopIndex++;
 	}
+}
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void ABattleBlasterGameMode::ActorDied(AActor* DeadActor)
+{
+	if (DeadActor == Tank)
+	{
+		// Tank just died
+		UE_LOG(LogTemp, Warning, TEXT("Tank Died, defeat!"));
+	}
+	else
+	{
+		// A Tower just died
+		if (ATower* DeadTower = Cast<ATower>(DeadActor))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("A Tower just Died!"));
+			DeadTower->Destroy();
+			
+			TowerCount--;
+			if (TowerCount == 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("All Towers are dead, Victory!"));
+			}
+		}
+	}
 }
